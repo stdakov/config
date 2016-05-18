@@ -9,13 +9,13 @@ The preferred way to install this tool is through [composer](http://getcomposer.
 Either run
 
 ```
-php composer.phar require stdakov/csv
+php composer.phar require stdakov/config:dev-master
 ```
 
 or add
 
 ```
-"stdakov/csv": "*"
+"stdakov/config": "dev-master"
 ```
 
 
