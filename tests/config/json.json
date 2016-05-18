@@ -1,0 +1,12 @@
+{
+    "name": "stuff",
+    "components": {
+        "Version": {
+            "versions": "1"
+        },
+        "Source": {
+            "ip": "0.0.0.1"
+        },
+        "Empty": {}
+    }
+}
