@@ -298,8 +298,9 @@ string(21) "Missing option:server"
 For working examples see the tests/example.php
 
 ##TODO
--Implement xml files
--Get recursive values 
+1.Implement xml files
+
+2.Get recursive values 
 
 ```php
 $config->load('ini')->get('database')->get('db_host')
