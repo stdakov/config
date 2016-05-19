@@ -63,19 +63,21 @@ Array
 ------------------INI--Configuration-----------------------
 ```php
 
-print_r($config->load('ini')->get());
-print_r($config->load('ini')->get('database'));
+print_r($config->load('ini')->get()->value());
+print_r($config->load('ini')->get('database')->value());
 try {
-    print_r($config->load('ini')->get('server'));
+    print_r($config->load('ini')->get('server')->value());
 } catch (\Exception $e) {
     var_dump($e->getMessage());
 }
 
 try {
-    print_r($config->load('app')->get('server'));
+    print_r($config->load('app')->get('server')->value());
 } catch (\Exception $e) {
     var_dump($e->getMessage());
 }
+
+$config->load('ini')->get('database')->value()['DB_HOST'] == $config->load('ini')->get('database')->get('DB_HOST')->value();
 ```
 
 Will output
@@ -116,8 +118,8 @@ string(25) "Missing Configuration:app"
 ```
 ------------------JSON--Configuration-----------------------
 ```php
-print_r($config->load('json')->get());
-print_r($config->load('json')->get('name'));
+print_r($config->load('json')->get()->value());
+print_r($config->load('json')->get('name')->value());
 ```
 
 Will output
@@ -151,8 +153,8 @@ stuff
 ------------------PHP--Configuration-----------------------
 
 ```php
-print_r($config->load('php')->get());
-print_r($config->load('php')->get('test'));
+print_r($config->load('php')->get()->value());
+print_r($config->load('php')->get('test')->value());
 ```
 
 Will output
@@ -181,8 +183,8 @@ $configData = [
 ];
 
 $config->set($configData, 'custom');
-print_r($config->load('custom')->get());
-print_r($config->load('custom')->get('user'));
+print_r($config->load('custom')->get()->value());
+print_r($config->load('custom')->get('user')->value());
 
 ```
 
@@ -205,8 +207,8 @@ username
 
 $customConfigPath = 'config/new/ini2.ini';
 $config->registerConfig($customConfigPath);
-print_r($config->load('ini2')->get());
-print_r($config->load('ini2')->get('database'));
+print_r($config->load('ini2')->get()->value());
+print_r($config->load('ini2')->get('database')->value());
 ```
 
 Will output
@@ -252,8 +254,8 @@ string(26) "Missing Configuration:app2"
 ```php
 $customConfigPath = 'config/new/ini2.ini';
 $config->registerConfig($customConfigPath, 'myIni');
-print_r($config->load('myIni')->get());
-print_r($config->load('myIni')->get('database'));
+print_r($config->load('myIni')->get()->value());
+print_r($config->load('myIni')->get('database')->value());
 ```
 
 Will output
@@ -299,15 +301,3 @@ For working examples see the tests/example.php
 
 ##TODO
 1.Implement xml files
-
-2.Get recursive values 
-
-```php
-$config->load('ini')->get('database')->get('db_host')
-```
-
-or with default value
-
-```php
-$config->load('ini')->get('database')->get('db_host', 'localhost')
-```

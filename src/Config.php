@@ -10,9 +10,10 @@ namespace Dakov;
  */
 class Config
 {
-    protected $config     = [];
-    protected $loadedConf = [];
-    protected $configPath = '';
+    protected $config       = [];
+    protected $loadedConf   = [];
+    protected $configPath   = '';
+    protected $loadedOption = [];
 
     public function __construct($configPath = '')
     {
@@ -32,6 +33,7 @@ class Config
     public function load($name = '')
     {
         $this->loadedConf = [];
+        $this->loadedOption = [];
 
         if ($name == '') {
             $this->loadedConf = $this->config;
@@ -47,7 +49,7 @@ class Config
     /**
      * @param string $name
      *
-     * @return array
+     * @return array|$this
      *
      * @throws \Exception
      */
@@ -58,16 +60,27 @@ class Config
         }
 
         if ($name == '') {
-            $config = $this->loadedConf;
-        } elseif (array_key_exists($name, $this->loadedConf)) {
+            if (!empty($this->loadedOption)) {
+                $config = $this->loadedOption;
+            } else {
+                $config = $this->loadedConf;
+            }
+        } elseif (array_key_exists($name, $this->loadedConf) && empty($this->loadedOption)) {
             $config = $this->loadedConf[$name];
+        } elseif (array_key_exists($name, $this->loadedOption)) {
+            $config = $this->loadedOption[$name];
         } else {
             throw new \Exception('Missing option:' . $name);
         }
 
-        $this->loadedConf = [];
+        $this->loadedOption = $config;
 
-        return $config;
+        return $this;
+    }
+
+    public function value()
+    {
+        return $this->loadedOption;
     }
 
     /**
