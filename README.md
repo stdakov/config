@@ -301,3 +301,4 @@ For working examples see the tests/example.php
 
 ##TODO
 1.Implement xml files
+2.Add functionality $config->load('ini2')->get('database.host')->value();
