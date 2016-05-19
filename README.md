@@ -198,5 +198,104 @@ username
 -------------------------------------------
 ```
 
+
+-------------------Custom dir-INI-----------------------
+
+```php
+
+$customConfigPath = 'config/new/ini2.ini';
+$config->registerConfig($customConfigPath);
+print_r($config->load('ini2')->get());
+print_r($config->load('ini2')->get('database'));
+```
+
+Will output
+
+```
+Array
+(
+    [database] => Array
+        (
+            [DB_HOST] => localhost
+            [DB_DATABASE] => test
+            [DB_USERNAME] => root
+            [DB_PASSWORD] => test
+        )
+
+    [admin authentication] => Array
+        (
+            [ADMIN_AUTH] => 1
+            [ADMIN_TABLE] => admin
+        )
+
+    [upload] => Array
+        (
+            [tmp_dir] => /tmp
+            [upload_dir] => /public/storage
+        )
+
+)
+Array
+(
+    [DB_HOST] => localhost
+    [DB_DATABASE] => test
+    [DB_USERNAME] => root
+    [DB_PASSWORD] => test
+)
+string(21) "Missing option:server"
+string(26) "Missing Configuration:app2"
+
+```
+
+-------------------Custom dir-INI-with custom name----------------------
+
+```php
+$customConfigPath = 'config/new/ini2.ini';
+$config->registerConfig($customConfigPath, 'myIni');
+print_r($config->load('myIni')->get());
+print_r($config->load('myIni')->get('database'));
+```
+
+Will output
+
+```
+Array
+(
+    [database] => Array
+        (
+            [DB_HOST] => localhost
+            [DB_DATABASE] => test
+            [DB_USERNAME] => root
+            [DB_PASSWORD] => test
+        )
+
+    [admin authentication] => Array
+        (
+            [ADMIN_AUTH] => 1
+            [ADMIN_TABLE] => admin
+        )
+
+    [upload] => Array
+        (
+            [tmp_dir] => /tmp
+            [upload_dir] => /public/storage
+        )
+
+)
+Array
+(
+    [DB_HOST] => localhost
+    [DB_DATABASE] => test
+    [DB_USERNAME] => root
+    [DB_PASSWORD] => test
+)
+string(21) "Missing option:server"
+string(21) "Missing option:server"
+
+```
+
+
+For working examples see the tests/example.php
+
 ##TODO
 Implement xml files

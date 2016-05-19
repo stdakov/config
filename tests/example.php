@@ -41,4 +41,36 @@ $config->set($configData, 'custom');
 print_r($config->load('custom')->get());
 print_r($config->load('custom')->get('user'));
 
-echo "\n-------------------------------------------\n";
+echo "\n-------------------Custom dir-INI-----------------------\n";
+$customConfigPath = 'config/new/ini2.ini';
+$config->registerConfig($customConfigPath);
+print_r($config->load('ini2')->get());
+print_r($config->load('ini2')->get('database'));
+try {
+    print_r($config->load('ini2')->get('server'));
+} catch (\Exception $e) {
+    var_dump($e->getMessage());
+}
+
+try {
+    print_r($config->load('app2')->get('server'));
+} catch (\Exception $e) {
+    var_dump($e->getMessage());
+}
+
+echo "\n-------------------Custom dir-INI-with custom name----------------------\n";
+$customConfigPath = 'config/new/ini2.ini';
+$config->registerConfig($customConfigPath, 'myIni');
+print_r($config->load('myIni')->get());
+print_r($config->load('myIni')->get('database'));
+try {
+    print_r($config->load('myIni')->get('server'));
+} catch (\Exception $e) {
+    var_dump($e->getMessage());
+}
+
+try {
+    print_r($config->load('myIni')->get('server'));
+} catch (\Exception $e) {
+    var_dump($e->getMessage());
+}

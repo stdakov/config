@@ -86,38 +86,64 @@ class Config
     {
         $configDir = ($configDir == "" ? $this->configPath : $configDir);
         $configPath = rtrim($configDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
-        $configFiles = glob($configPath . '*');
+        $configFiles = glob($configPath . '*.{php,ini,json,xmp}', GLOB_BRACE);
 
         foreach ($configFiles as $config) {
-            $pathParts = pathinfo($config);
-
-            switch ($pathParts['extension']) {
-                case 'php':
-                    ob_start();
-                    $configData = require_once($config);
-                    $this->set($configData, basename($config, '.php'));
-                    ob_end_clean();
-                    break;
-                case 'ini':
-                    $configData = parse_ini_file($config, true);
-                    if (!empty($configData)) {
-                        $this->set($configData, basename($config, '.ini'));
-                    }
-                    break;
-                case 'json':
-                    $configData = json_decode(file_get_contents($config), true);
-                    if (!empty($configData)) {
-                        $this->set($configData, basename($config, '.json'));
-                    }
-                    break;
-                case 'xmp':
-                    //TODO implement xml
-                    break;
-                default:
-                    break;
-            }
-
+            $this->registerConfig($config);
         }
+    }
+
+    /**
+     * @param string $config
+     * @param string $name
+     * @return $this
+     * @throws \Exception
+     */
+    public function registerConfig($config, $name = '')
+    {
+        if (!file_exists($config)) {
+            throw new \Exception('Missing configuration:' . $config);
+        }
+
+        $pathParts = pathinfo($config);
+
+        $configData = [];
+
+        switch ($pathParts['extension']) {
+            case 'php':
+                ob_start();
+                $configData = require_once($config);
+                ob_end_clean();
+                if (!$name) {
+                    $name = basename($config, '.php');
+                }
+                break;
+            case 'ini':
+                $configData = parse_ini_file($config, true);
+                if (!$name) {
+                    $name = basename($config, '.ini');
+                }
+                break;
+            case 'json':
+                $configData = json_decode(file_get_contents($config), true);
+                if (!$name) {
+                    $name = basename($config, '.json');
+                }
+                break;
+            case 'xmp':
+                //TODO implement xml
+                break;
+            default:
+                break;
+        }
+
+        if (empty($configData)) {
+            throw new \Exception('Empty configuration:' . $config);
+        }
+
+        $this->set($configData, $name);
+
+        return $this;
     }
 
     /**
